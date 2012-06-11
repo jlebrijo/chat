@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="/resources/template.xhtml">
+	<ui:define name="cabecera">Inicio</ui:define>
+	<ui:define name="content">
+		<div style="margin: 40px;">
+			<h1>SPIKE: JSF2/Primefaces</h1>
+			<p>Specs: Open chat</p>
+			<p:fieldset legend="Credentials">
+				<h:form id="form">
+					<h:panelGrid columns="4">
+						<h:outputText value="You can select a room " />
+						<h:selectOneMenu value="#{speaker.room}" converter="#{roomsCombo}">
+							<f:selectItem itemValue="#{null}" itemLabel="Create" />
+							<f:selectItems value="#{roomsCombo.list}" var="r"
+								itemValue="#{r}" itemLabel="#{r.name}" />
+						</h:selectOneMenu>
+						<h:outputText value=" or create a new one " />
+						<h:inputText value="#{speaker.newRoomName}" />
+						<h:outputText value="Select a nick name: " />
+						<h:inputText value="#{speaker.nick}" />
+					</h:panelGrid>
+					<p:commandButton value="Enter room" update="chatWindow, messages"
+						onsuccess="chatDialog.show();" onerror="chatDialog.hide();"
+						action="#{speaker.enterRoom}" id="enterRoom" />
+				</h:form>
+				<p:dialog header="ChatRoom" widgetVar="chatDialog" position="100,100"
+					closeListener="#{speaker.leaveRoom}" modal="true"
+					appendToBody="true">
+					<p:messages id="messages" />
+					<h:form id="chatWindow">
+						<h3>#{speaker.room.name}</h3>
+						<h:panelGrid columns="2">
+							<p:dataList id="board" value="#{speaker.room.lastComments}"
+								var="c" itemType="disc">
+								<h:outputText value="#{c}" />
+							</p:dataList>
+							<p:dataList id="speakers" value="#{speaker.room.speakers}"
+								var="s" itemType="disc">
+								<h:outputText value="#{s.nick}" />
+							</p:dataList>
+							<h:inputText id="comment" value="#{speaker.comment}" />
+							<p:commandButton value="Add" action="#{speaker.addComment}"
+								update="chatWindow" />
+						</h:panelGrid>
+						<p:focus for="comment" />
+						<p:poll interval="3" update="board, speakers" />
+					</h:form>
+				</p:dialog>
+			</p:fieldset>
+		</div>
+	</ui:define>
+</ui:composition>
