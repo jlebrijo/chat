@@ -5,8 +5,8 @@
 	<artifactId>chat</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>chat Maven Webapp</name>
-	<url>http://maven.apache.org</url>
+	<name>Chat</name>
+	<url>http://labs.lebrijo.com:8080/chat</url>
 	<build>
 		<finalName>chat</finalName>
 		<plugins>
